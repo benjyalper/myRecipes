@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Environment variables (keep secrets out of git)
+.env.local
+.env.*.local
+
+# Data directory — recipes and uploaded images are stored here at runtime
+data/
+public/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
