@@ -47,7 +47,9 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     if (recipe) {
       recipe.images.forEach((imgPath) => {
         try {
-          const diskPath = path.join(process.cwd(), 'public', imgPath);
+          // imgPath is like /api/images/<filename> — extract just the filename
+          const filename = path.basename(imgPath);
+          const diskPath = path.join(process.cwd(), 'data', 'uploads', filename);
           if (fs.existsSync(diskPath)) {
             fs.unlinkSync(diskPath);
           }

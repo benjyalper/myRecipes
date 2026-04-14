@@ -24,8 +24,10 @@ import { Recipe } from '../../lib/types';
 // Disable Next.js default body parser — formidable handles it
 export const config = { api: { bodyParser: false } };
 
-// Where uploaded images are stored (served as /uploads/<filename>)
-const UPLOADS_DIR = path.join(process.cwd(), 'public', 'uploads');
+// Store images under data/uploads/ — this directory sits on the Railway
+// persistent volume (mounted at /app/data) so they survive redeploys.
+// They are served via /api/images/[filename] rather than Next.js static files.
+const UPLOADS_DIR = path.join(process.cwd(), 'data', 'uploads');
 
 function ensureUploadsDir() {
   if (!fs.existsSync(UPLOADS_DIR)) {
@@ -79,7 +81,7 @@ export default async function handler(
       const dest   = path.join(UPLOADS_DIR, name);
       fs.renameSync(file.filepath, dest);
       uploadedPaths.push(dest);
-      publicPaths.push(`/uploads/${name}`);
+      publicPaths.push(`/api/images/${name}`);
     }
 
     if (uploadedPaths.length === 0) {
